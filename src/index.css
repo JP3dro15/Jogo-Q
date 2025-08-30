@@ -42,20 +42,25 @@
 
     --radius: 0.5rem;
 
-    /* Chemistry-themed gradients and effects */
-    --gradient-terminal: linear-gradient(135deg, hsl(165 100% 45%), hsl(165 80% 35%));
-    --gradient-danger: linear-gradient(135deg, hsl(0 85% 60%), hsl(15 90% 50%));
-    --gradient-lab: linear-gradient(180deg, hsl(220 20% 12%), hsl(220 25% 8%));
-    --gradient-contamination: linear-gradient(45deg, hsl(120 100% 25%), hsl(165 100% 35%));
+    /* Advanced Chemistry Gaming Gradients */
+    --gradient-terminal: linear-gradient(135deg, hsl(165 100% 45%), hsl(165 80% 35%), hsl(180 90% 25%));
+    --gradient-danger: linear-gradient(135deg, hsl(0 85% 60%), hsl(15 90% 50%), hsl(30 95% 45%));
+    --gradient-lab: linear-gradient(180deg, hsl(220 20% 12%), hsl(220 25% 8%), hsl(220 15% 5%));
+    --gradient-contamination: linear-gradient(45deg, hsl(120 100% 25%), hsl(165 100% 35%), hsl(180 85% 40%));
+    --gradient-holographic: linear-gradient(45deg, hsl(165 100% 45%), hsl(200 100% 50%), hsl(260 100% 60%), hsl(300 100% 50%));
+    --gradient-neural: linear-gradient(90deg, hsl(165 100% 45% / 0.8), hsl(200 100% 50% / 0.6), hsl(165 100% 45% / 0.4));
     
-    /* Glowing effects */
-    --glow-primary: 0 0 20px hsl(165 100% 45% / 0.5);
-    --glow-danger: 0 0 20px hsl(0 85% 60% / 0.4);
-    --glow-lab: 0 0 30px hsl(45 95% 55% / 0.3);
+    /* Gaming Glowing Effects */
+    --glow-primary: 0 0 20px hsl(165 100% 45% / 0.6), 0 0 40px hsl(165 100% 45% / 0.4), 0 0 60px hsl(165 100% 45% / 0.2);
+    --glow-danger: 0 0 20px hsl(0 85% 60% / 0.6), 0 0 40px hsl(0 85% 60% / 0.3);
+    --glow-lab: 0 0 30px hsl(45 95% 55% / 0.4), 0 0 60px hsl(45 95% 55% / 0.2);
+    --glow-holographic: 0 0 25px hsl(165 100% 45% / 0.8), 0 0 50px hsl(200 100% 50% / 0.4);
     
-    /* Animations */
+    /* Gaming Animations */
     --transition-glow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --molecular-spin: 8s linear infinite;
+    --pulse-glow: 2s ease-in-out infinite alternate;
 
     --sidebar-background: 0 0% 98%;
 
@@ -119,8 +124,9 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-rajdhani;
     background: var(--gradient-lab);
+    overflow-x: hidden;
   }
 }
 
@@ -128,18 +134,30 @@
   .terminal-glow {
     box-shadow: var(--glow-primary);
     transition: var(--transition-glow);
+    border: 1px solid hsl(165 100% 45% / 0.3);
   }
   
   .terminal-glow:hover {
-    box-shadow: var(--glow-primary), inset 0 0 10px hsl(165 100% 45% / 0.2);
+    box-shadow: var(--glow-primary), inset 0 0 20px hsl(165 100% 45% / 0.15);
+    border-color: hsl(165 100% 45% / 0.6);
+    transform: translateY(-2px) scale(1.02);
   }
   
   .danger-glow {
     box-shadow: var(--glow-danger);
+    border: 1px solid hsl(0 85% 60% / 0.4);
   }
   
   .lab-glow {
     box-shadow: var(--glow-lab);
+    border: 1px solid hsl(45 95% 55% / 0.4);
+  }
+  
+  .holographic-glow {
+    box-shadow: var(--glow-holographic);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    border-image: var(--gradient-holographic) 1;
   }
   
   .molecular-spin {
@@ -147,14 +165,48 @@
   }
   
   .particle-float {
-    animation: particle-drift 8s linear infinite;
+    animation: particle-drift 12s linear infinite;
   }
   
   .typing-animation {
-    animation: typing 2s steps(40) 1s forwards, blink-cursor 0.75s step-end infinite;
+    animation: typing 3s steps(60) 1s forwards, blink-cursor 0.75s step-end infinite;
     white-space: nowrap;
     overflow: hidden;
-    border-right: 2px solid hsl(165 100% 45%);
+    border-right: 3px solid hsl(165 100% 45%);
+  }
+  
+  .question-card {
+    transition: var(--transition-bounce);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(165 100% 45% / 0.2);
+  }
+  
+  .question-card:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: var(--glow-primary), 0 10px 25px hsl(0 0% 0% / 0.3);
+    border-color: hsl(165 100% 45% / 0.5);
+  }
+  
+  .question-card.selected {
+    transform: translateY(-2px) scale(1.05);
+    animation: pulse-selection 0.6s ease-out;
+  }
+  
+  .question-card.correct {
+    background: linear-gradient(135deg, hsl(165 100% 45% / 0.2), hsl(165 80% 35% / 0.1));
+    border-color: hsl(165 100% 45%);
+    box-shadow: var(--glow-primary);
+  }
+  
+  .question-card.incorrect {
+    background: linear-gradient(135deg, hsl(0 85% 60% / 0.2), hsl(15 90% 50% / 0.1));
+    border-color: hsl(0 85% 60%);
+    box-shadow: var(--glow-danger);
+  }
+  
+  .character-animated {
+    filter: drop-shadow(0 0 15px hsl(165 100% 45% / 0.6));
+    animation: character-float 6s ease-in-out infinite;
   }
 }
 
@@ -174,18 +226,34 @@
   .gradient-contamination {
     background: var(--gradient-contamination);
   }
+  
+  .gradient-holographic {
+    background: var(--gradient-holographic);
+    background-size: 200% 200%;
+    animation: holographic-shift 3s ease-in-out infinite;
+  }
+  
+  .gradient-neural {
+    background: var(--gradient-neural);
+    animation: neural-pulse var(--pulse-glow);
+  }
 }
 
 @keyframes molecular-rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(90deg) scale(1.1); }
+  50% { transform: rotate(180deg) scale(1); }
+  75% { transform: rotate(270deg) scale(1.1); }
+  to { transform: rotate(360deg) scale(1); }
 }
 
 @keyframes particle-drift {
-  0% { transform: translateY(100vh) translateX(-10px); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(-100px) translateX(10px); opacity: 0; }
+  0% { transform: translateY(100vh) translateX(-20px) rotate(0deg); opacity: 0; }
+  5% { opacity: 0.6; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  95% { opacity: 0.6; }
+  100% { transform: translateY(-100px) translateX(20px) rotate(360deg); opacity: 0; }
 }
 
 @keyframes typing {
@@ -196,4 +264,43 @@
 @keyframes blink-cursor {
   from, to { border-color: transparent; }
   50% { border-color: hsl(165 100% 45%); }
+}
+
+@keyframes pulse-selection {
+  0% { transform: translateY(-2px) scale(1); }
+  50% { transform: translateY(-6px) scale(1.08); }
+  100% { transform: translateY(-2px) scale(1.05); }
+}
+
+@keyframes character-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(1deg); }
+  50% { transform: translateY(-4px) rotate(0deg); }
+  75% { transform: translateY(-12px) rotate(-1deg); }
+}
+
+@keyframes holographic-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes neural-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes scan-vertical {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes scan-horizontal {
+  0% { transform: translateX(-100vw); }
+  100% { transform: translateX(100vw); }
+}
+
+@keyframes scan-flicker {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
 }
