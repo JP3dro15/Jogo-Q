@@ -1,12 +1,9 @@
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import EnhancedCutscene from "./EnhancedCutscene";
-import EnhancedQuiz from "./EnhancedQuiz";
-import EnhancedEnding from "./EnhancedEnding";
-import EnhancedParticleSystem from "./EnhancedParticleSystem";
-import ScanLines from "./ScanLines";
-import AudioVisualizer from "./AudioVisualizer";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Enhanced3DCutscene from "./Enhanced3DCutscene";
+import Enhanced3DQuiz from "./Enhanced3DQuiz";
+import Enhanced3DEnding from "./Enhanced3DEnding";
+import SoundSystem from "./SoundSystem";
 
 type GameState = "cutscene" | "quiz" | "ending";
 
@@ -35,37 +32,33 @@ const ChemistryQuest = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <EnhancedParticleSystem />
-      <ScanLines />
+    <motion.div 
+      className="min-h-screen relative overflow-hidden bg-background"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      {/* Sound System */}
+      <SoundSystem enabled={true} volume={0.3} />
       
-      {/* Audio Visualizer */}
-      <div className="fixed bottom-4 left-4 z-50">
-        <AudioVisualizer 
-          isActive={true}
-          intensity={gameState === "quiz" ? "high" : "medium"}
+      {/* Game States */}
+      {gameState === "cutscene" && (
+        <Enhanced3DCutscene onComplete={handleCutsceneComplete} />
+      )}
+      
+      {gameState === "quiz" && (
+        <Enhanced3DQuiz onComplete={handleQuizComplete} />
+      )}
+      
+      {gameState === "ending" && (
+        <Enhanced3DEnding 
+          score={stats.score}
+          total={stats.total}
+          timeBonus={stats.timeBonus}
+          onRestart={handleRestart}
         />
-      </div>
-      
-      <div className="relative z-10">
-        {gameState === "cutscene" && (
-          <EnhancedCutscene onComplete={handleCutsceneComplete} />
-        )}
-        
-        {gameState === "quiz" && (
-          <EnhancedQuiz onComplete={handleQuizComplete} />
-        )}
-        
-        {gameState === "ending" && (
-          <EnhancedEnding 
-            score={stats.score}
-            total={stats.total}
-            timeBonus={stats.timeBonus}
-            onRestart={handleRestart}
-          />
-        )}
-      </div>
-    </div>
+      )}
+    </motion.div>
   );
 };
 
