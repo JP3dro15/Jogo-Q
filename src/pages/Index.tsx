@@ -1,7 +1,7 @@
-import ChemistryQuest from "@/components/ChemistryQuest";
+import Simple3DGame from "@/components/Simple3DGame";
 
 const Index = () => {
-  return <ChemistryQuest />;
+  return <Simple3DGame />;
 };
 
 export default Index;
