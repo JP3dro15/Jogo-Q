@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, Stars, Float, Text3D } from '@react-three/drei';
+import { OrbitControls, Environment, Stars, Float, Text } from '@react-three/drei';
 import { Suspense } from 'react';
 import Scene3D from "./Scene3D";
 import { HolographicUI, HolographicButton, TypingText, GlitchText } from "./HolographicUI";
@@ -63,19 +63,15 @@ const storySequence = [
 function Title3D({ text, position }: { text: string; position: [number, number, number] }) {
   return (
     <Float speed={2} rotationIntensity={0.1} floatIntensity={0.2}>
-      <Text3D
-        font="/fonts/orbitron_regular.json"
-        size={1}
-        height={0.1}
+      <Text
+        fontSize={1}
         position={position}
+        color="#00ff88"
+        anchorX="center"
+        anchorY="middle"
       >
         {text}
-        <meshStandardMaterial 
-          color="#00ff88" 
-          emissive="#00ff88" 
-          emissiveIntensity={0.5}
-        />
-      </Text3D>
+      </Text>
     </Float>
   );
 }
@@ -165,44 +161,40 @@ const Enhanced3DCutscene = ({ onComplete }: Enhanced3DCutsceneProps) => {
       <div className="absolute inset-0">
         <Canvas camera={{ position: [currentStory.cameraPosition[0], currentStory.cameraPosition[1], currentStory.cameraPosition[2]], fov: 60 }}>
           <OrbitControls 
-            enableZoom={false} 
-            enablePan={false} 
-            autoRotate 
-            autoRotateSpeed={0.5}
+            enableZoom={false}
+            enablePan={false}
+            autoRotate
+            autoRotateSpeed={0.2}
             maxPolarAngle={Math.PI / 2}
             minPolarAngle={Math.PI / 6}
           />
           
-          {/* Dynamic lighting based on scene */}
-          <ambientLight intensity={0.2} color={currentStory.bgColor} />
-          <directionalLight 
-            position={[10, 10, 5]} 
-            intensity={0.6} 
-            color="#ffffff"
-          />
-          <pointLight 
-            position={[-10, 5, -10]} 
-            intensity={0.4} 
-            color={currentStory.scene === 'destruction' ? '#ff6b6b' : '#00ff88'} 
-          />
+          <ambientLight intensity={0.3} color="#00ff88" />
+          <directionalLight position={[10, 10, 5]} intensity={0.4} color="#ffffff" />
+          <pointLight position={[-10, 5, -10]} intensity={0.2} color="#ff6b6b" />
 
           <Suspense fallback={null}>
-            <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade />
             <Environment preset="night" />
+            <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade />
             
-            {/* 3D Scene Elements */}
-            <Scene3D stage="cutscene" />
-            
-            {/* Cinematic particles */}
-            <CinematicParticles scene={currentStory.scene} />
-            
-            {/* 3D Text for dramatic effect */}
-            {isTypingComplete && (
-              <Title3D 
-                text={currentStory.title.split(' ')[0]} 
-                position={[0, 5, -10]} 
-              />
-            )}
+            {/* Background elements from Scene3D */}
+            <Scene3D stage="cutscene">
+              {/* Story-specific 3D text */}
+              {currentStory.scene === "intro" && (
+                <Float speed={1} rotationIntensity={0.3} floatIntensity={0.5}>
+                  <Text
+                    position={[0, 2, -5]}
+                    rotation={[0, Math.PI / 6, 0]}
+                    fontSize={1}
+                    color="#00ff88"
+                    anchorX="center"
+                    anchorY="middle"
+                  >
+                    2087
+                  </Text>
+                </Float>
+              )}
+            </Scene3D>
           </Suspense>
         </Canvas>
       </div>

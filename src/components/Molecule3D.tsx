@@ -227,7 +227,6 @@ const Molecule3D = ({
             color={selected ? "#00ff88" : "#00ffff"}
             anchorX="center"
             anchorY="middle"
-            font="/fonts/orbitron-bold.woff"
           >
             {type}
           </Text>
