@@ -1,7 +1,7 @@
-import Simple3DGame from "@/components/Simple3DGame";
+import ExplorationGame from "@/components/ExplorationGame";
 
 const Index = () => {
-  return <Simple3DGame />;
+  return <ExplorationGame />;
 };
 
 export default Index;
