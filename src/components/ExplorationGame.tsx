@@ -191,26 +191,27 @@ const ExplorationGame = () => {
       <AnimatePresence>
         {gameState === "question" && currentQuestion && (
           <motion.div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.div
+              className="w-full max-w-4xl my-8"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
             >
-              <HolographicUI className="max-w-4xl w-full mx-4">
-                <div className="space-y-6">
+              <HolographicUI className="w-full">
+                <div className="space-y-4">
                   {/* Scenario */}
                   <div className="text-center">
                     <motion.div
-                      className="inline-block bg-primary/20 px-4 py-2 rounded-full border border-primary/40 mb-4"
+                      className="inline-block bg-primary/20 px-3 py-2 rounded-full border border-primary/40 mb-3"
                       animate={{ scale: [1, 1.05, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
-                      <span className="text-sm font-bold text-primary">
+                      <span className="text-xs md:text-sm font-bold text-primary">
                         {currentQuestion.scenario}
                       </span>
                     </motion.div>
@@ -218,7 +219,7 @@ const ExplorationGame = () => {
 
                   {/* Question */}
                   <motion.h2
-                    className="text-2xl font-bold text-primary glow text-center"
+                    className="text-lg md:text-xl font-bold text-primary glow text-center px-2"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.3 }}
@@ -227,9 +228,9 @@ const ExplorationGame = () => {
                   </motion.h2>
 
                   {/* Options */}
-                  <div className="grid gap-4">
+                  <div className="grid gap-3 mt-4">
                     {currentQuestion.options.map((option, index) => {
-                      let buttonClass = "w-full p-4 text-left transition-all duration-300";
+                      let buttonClass = "w-full p-3 text-left transition-all duration-300 text-sm md:text-base";
                       
                       if (showFeedback) {
                         if (index === currentQuestion.correctAnswer) {
@@ -251,10 +252,10 @@ const ExplorationGame = () => {
                             disabled={showFeedback}
                             className={buttonClass}
                           >
-                            <span className="font-semibold mr-2">
+                            <span className="font-semibold mr-2 text-primary">
                               {String.fromCharCode(65 + index)})
                             </span>
-                            {option}
+                            <span className="break-words">{option}</span>
                           </HolographicButton>
                         </motion.div>
                       );
@@ -265,22 +266,22 @@ const ExplorationGame = () => {
                   <AnimatePresence>
                     {showFeedback && (
                       <motion.div
-                        className="mt-6 p-6 rounded-lg bg-accent/10 border border-accent/30"
+                        className="mt-4 p-4 rounded-lg bg-accent/10 border border-accent/30"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                       >
-                        <div className="text-center mb-4">
+                        <div className="text-center mb-3">
                           {selectedAnswer === currentQuestion.correctAnswer ? (
-                            <div className="text-green-400 text-2xl font-bold">
+                            <div className="text-green-400 text-xl font-bold">
                               ✅ Correto!
                             </div>
                           ) : (
-                            <div className="text-red-400 text-2xl font-bold">
+                            <div className="text-red-400 text-xl font-bold">
                               ❌ Incorreto
                             </div>
                           )}
                         </div>
-                        <p className="text-accent text-center">
+                        <p className="text-accent text-center text-sm md:text-base">
                           {currentQuestion.explanation}
                         </p>
                       </motion.div>
