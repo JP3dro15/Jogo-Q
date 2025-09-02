@@ -14,8 +14,8 @@ export interface Question {
 export const questionDatabase: Question[] = [
   {
     id: 'survival-001',
-    scenario: "EMERGÊNCIA: ÁGUA CONTAMINADA",
-    question: "Você encontrou um reservatório subterrâneo, mas a água contém metais pesados tóxicos. Qual processo químico você deve usar para purificá-la e salvar sua vida?",
+    scenario: "🚨 MISSÃO CRÍTICA: PURIFICAÇÃO DE ÁGUA",
+    question: "Dr. Chen, o reservatório da Zona Alpha contém metais pesados letais (Pb²⁺, Cd²⁺, Hg²⁺). Sobreviventes dependem desta água! Qual processo químico salvará suas vidas?",
     options: [
       "Precipitação química com agentes quelantes",
       "Simples fervura da água",
@@ -30,8 +30,8 @@ export const questionDatabase: Question[] = [
   },
   {
     id: 'survival-002',
-    scenario: "SITUAÇÃO CRÍTICA: SINALIZAÇÃO DE RESGATE",
-    question: "Você precisa criar um sinal de fumaça visível para equipes de resgate. Qual reação química gera CO₂ rapidamente para inflar um balão de sinalização?",
+    scenario: "⚡ OPERAÇÃO RESGATE: SINAL DE EMERGÊNCIA",
+    question: "Uma tempestade radioativa se aproxima! Você tem 5 minutos para criar um sinal de CO₂ que inflará o balão de evacuação. Qual reação salvará os refugiados?",
     options: [
       "NaHCO₃ + Ácido acético → CO₂ + H₂O + Acetato",
       "NaCl + H₂O → Solução salina",
@@ -46,8 +46,8 @@ export const questionDatabase: Question[] = [
   },
   {
     id: 'survival-003',
-    scenario: "ALERTA TÓXICO: VAZAMENTO QUÍMICO",
-    question: "Gases tóxicos estão se espalhando pelo seu abrigo após um vazamento industrial. Que substância você deve usar em sua máscara improvisada para adsorver esses poluentes?",
+    scenario: "☢️ CÓDIGO VERMELHO: CONTAMINAÇÃO ATMOSFÉRICA",
+    question: "O reator da Zona Beta liberou NH₃, SO₂ e NO₂ no ar! Crianças estão desmaiando. Que material em sua máscara filtrará estes gases mortais?",
     options: [
       "Carvão ativado com elevada área superficial",
       "Algodão comum embebido em água",
@@ -62,8 +62,8 @@ export const questionDatabase: Question[] = [
   },
   {
     id: 'survival-004',
-    scenario: "NEUTRALIZAÇÃO DE EMERGÊNCIA",
-    question: "Um derramamento de ácido sulfúrico está corroendo o piso do laboratório e ameaça suas reservas de comida. Qual base você deve usar para neutralizar o ácido com segurança?",
+    scenario: "🔥 EMERGÊNCIA QUÍMICA: ÁCIDO DESCONTROLADO",
+    question: "H₂SO₄ concentrado vaza do depósito e corrói em direção ao bunker com 200 sobreviventes! Você tem apenas bicarbonato e hidróxido. Qual escolha salvará vidas?",
     options: [
       "NaOH (hidróxido de sódio) em pequenas quantidades",
       "Água em grande volume",

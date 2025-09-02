@@ -116,13 +116,18 @@ const ExplorationGame = () => {
             
             <div className="space-y-6 mb-8">
               <TypingText 
-                text="O mundo pós-apocalíptico precisa de um cientista..."
+                text="Ano 2087: A Grande Catástrofe Química devastou a Terra..."
                 speed={50}
                 onComplete={() => {}}
               />
               <TypingText 
-                text="Explore as áreas contaminadas e use seu conhecimento em química para sobreviver!"
+                text="Você é Dr. Alex Chen, químico sobrevivente. Sua missão: neutralizar as zonas tóxicas e salvar a humanidade!"
                 speed={40}
+                onComplete={() => {}}
+              />
+              <TypingText 
+                text="Use seus conhecimentos em química para purificar o ambiente, criar antídotos e restaurar a vida no planeta."
+                speed={35}
                 onComplete={() => {}}
               />
             </div>
@@ -151,6 +156,11 @@ const ExplorationGame = () => {
             completedQuestions={completedQuestions}
             activeQuestionId={currentQuestion?.id || null}
             onQuestionTrigger={handleQuestionTrigger}
+            onPlayerMove={(keys) => {
+              if ((window as any).setPlayerKeys) {
+                (window as any).setPlayerKeys(keys);
+              }
+            }}
           />
           
           <Player

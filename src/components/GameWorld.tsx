@@ -12,44 +12,50 @@ interface GameWorldProps {
   completedQuestions: Set<string>;
   activeQuestionId: string | null;
   onQuestionTrigger: (questionId: string) => void;
+  onPlayerMove: (keys: Set<string>) => void;
 }
 
 const GameWorld = ({
   playerPosition,
   completedQuestions,
   activeQuestionId,
-  onQuestionTrigger
+  onQuestionTrigger,
+  onPlayerMove
 }: GameWorldProps) => {
 
-  // Define areas where questions appear
+  // Define areas where questions appear - positioned to fit in viewport
   const gameAreas = [
     {
       id: 'area-1',
-      position: { x: 200, y: 150 },
-      size: { width: 150, height: 100 },
+      position: { x: 150, y: 120 },
+      size: { width: 120, height: 80 },
       questionIndex: 0,
-      environment: 'toxic-water'
+      environment: 'toxic-water',
+      title: 'Zona Contaminada'
     },
     {
       id: 'area-2', 
-      position: { x: 600, y: 200 },
-      size: { width: 120, height: 120 },
+      position: { x: 450, y: 150 },
+      size: { width: 100, height: 100 },
       questionIndex: 1,
-      environment: 'gas-leak'
+      environment: 'gas-leak',
+      title: 'Vazamento Tóxico'
     },
     {
       id: 'area-3',
-      position: { x: 300, y: 400 },
-      size: { width: 140, height: 90 },
+      position: { x: 200, y: 320 },
+      size: { width: 110, height: 70 },
       questionIndex: 2,
-      environment: 'acid-spill'
+      environment: 'acid-spill',
+      title: 'Derrame Ácido'
     },
     {
       id: 'area-4',
-      position: { x: 700, y: 450 },
-      size: { width: 130, height: 110 },
+      position: { x: 500, y: 350 },
+      size: { width: 100, height: 90 },
       questionIndex: 3,
-      environment: 'contaminated-air'
+      environment: 'contaminated-air',
+      title: 'Ar Poluído'
     }
   ];
 
@@ -256,18 +262,58 @@ const GameWorld = ({
       
       {/* Instructions overlay */}
       <motion.div
-        className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm border border-primary/30 rounded-lg p-4 max-w-sm"
+        className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm border border-primary/30 rounded-lg p-3 max-w-sm"
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 2 }}
       >
-        <h3 className="text-lg font-bold text-primary mb-2">🎮 Controles</h3>
-        <div className="text-sm text-accent space-y-1">
-          <div><kbd className="bg-primary/20 px-1 rounded">WASD</kbd> ou <kbd className="bg-primary/20 px-1 rounded">↑↓←→</kbd> - Mover</div>
-          <div>🎯 Explore as áreas marcadas</div>
-          <div>🧪 Resolva os desafios químicos</div>
+        <h3 className="text-sm font-bold text-primary mb-2">🎮 Controles</h3>
+        <div className="text-xs text-accent space-y-1">
+          <div><kbd className="bg-primary/20 px-1 rounded text-xs">WASD</kbd> ou <kbd className="bg-primary/20 px-1 rounded text-xs">↑↓←→</kbd> - PC</div>
+          <div>📱 Swipe para mover no celular</div>
+          <div>🎯 Entre nas áreas brilhantes</div>
+          <div>🧪 Sobreviva aos desafios químicos</div>
         </div>
       </motion.div>
+
+      {/* Mobile directional pad */}
+      <div className="absolute bottom-4 left-4 md:hidden">
+        <div className="grid grid-cols-3 gap-1 w-32 h-32">
+          <div></div>
+          <button 
+            className="bg-primary/20 rounded border border-primary/40 text-primary font-bold text-lg flex items-center justify-center"
+            onTouchStart={() => onPlayerMove(new Set(['w']))}
+            onTouchEnd={() => onPlayerMove(new Set())}
+          >
+            ↑
+          </button>
+          <div></div>
+          <button 
+            className="bg-primary/20 rounded border border-primary/40 text-primary font-bold text-lg flex items-center justify-center"
+            onTouchStart={() => onPlayerMove(new Set(['a']))}
+            onTouchEnd={() => onPlayerMove(new Set())}
+          >
+            ←
+          </button>
+          <div></div>
+          <button 
+            className="bg-primary/20 rounded border border-primary/40 text-primary font-bold text-lg flex items-center justify-center"
+            onTouchStart={() => onPlayerMove(new Set(['d']))}
+            onTouchEnd={() => onPlayerMove(new Set())}
+          >
+            →
+          </button>
+          <div></div>
+          <button 
+            className="bg-primary/20 rounded border border-primary/40 text-primary font-bold text-lg flex items-center justify-center"
+            onTouchStart={() => onPlayerMove(new Set(['s']))}
+            onTouchEnd={() => onPlayerMove(new Set())}
+          >
+            ↓
+          </button>
+          <div></div>
+        </div>
+      </div>
     </div>
   );
 };

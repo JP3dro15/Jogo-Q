@@ -19,6 +19,61 @@ const Player = ({ position, onMove, size = 40 }: PlayerProps) => {
 
   const moveSpeed = 3;
 
+  // Mobile touch controls
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
+  const [touchMove, setTouchMove] = useState<{ x: number; y: number } | null>(null);
+
+  // Expose setKeys for external control
+  useEffect(() => {
+    (window as any).setPlayerKeys = setKeys;
+    return () => {
+      delete (window as any).setPlayerKeys;
+    };
+  }, []);
+
+  const handleTouchStart = useCallback((e: TouchEvent) => {
+    const touch = e.touches[0];
+    setTouchStart({ x: touch.clientX, y: touch.clientY });
+  }, []);
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    if (!touchStart) return;
+    const touch = e.touches[0];
+    setTouchMove({ x: touch.clientX, y: touch.clientY });
+  }, [touchStart]);
+
+  const handleTouchEnd = useCallback(() => {
+    if (!touchStart || !touchMove) {
+      setTouchStart(null);
+      setTouchMove(null);
+      return;
+    }
+
+    const deltaX = touchMove.x - touchStart.x;
+    const deltaY = touchMove.y - touchStart.y;
+    const minSwipeDistance = 30;
+
+    if (Math.abs(deltaX) > minSwipeDistance || Math.abs(deltaY) > minSwipeDistance) {
+      const swipeKeys = new Set<string>();
+      
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // Horizontal swipe
+        if (deltaX > 0) swipeKeys.add('d');
+        else swipeKeys.add('a');
+      } else {
+        // Vertical swipe
+        if (deltaY > 0) swipeKeys.add('s');
+        else swipeKeys.add('w');
+      }
+      
+      setKeys(swipeKeys);
+      setTimeout(() => setKeys(new Set()), 200);
+    }
+
+    setTouchStart(null);
+    setTouchMove(null);
+  }, [touchStart, touchMove]);
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     const key = e.key.toLowerCase();
     if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key)) {
@@ -39,11 +94,18 @@ const Player = ({ position, onMove, size = 40 }: PlayerProps) => {
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchend', handleTouchEnd);
+    
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [handleKeyDown, handleKeyUp]);
+  }, [handleKeyDown, handleKeyUp, handleTouchStart, handleTouchMove, handleTouchEnd]);
 
   useEffect(() => {
     if (keys.size === 0) {
